@@ -10,11 +10,9 @@ using namespace std;
 
 
 LocationImpl::~LocationImpl() {
-	this->release();
 }
 
 LocationImpl::LocationImpl(EventLogger* logger, string name) : Location(logger, name) {
-	this->addRef();
 }
 
 void LocationImpl::agentEnters(AgentPointer a) {
@@ -29,13 +27,3 @@ AgentList LocationImpl::agentsInside()
 {
 	return agents;
 }
-
-
-void LocationImpl::addRef() {
-	this->addRefImpl();
-}
-
-void LocationImpl::release() {
-	this->releaseImpl();
-}
-

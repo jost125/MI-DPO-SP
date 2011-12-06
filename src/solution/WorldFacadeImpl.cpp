@@ -16,26 +16,27 @@ WorldFacadeImpl::WorldFacadeImpl(EventLogger* logger) {
 	getLogger()->logEvent(EventLogger::constructorString());
 }
 
-//void WorldFacadeImpl::freeUpLocations()
-//{
-//		for(LocationMap::iterator it = locations.begin();it != locations.end();it++)
-//	{
-//		delete it->;
-//	}
-//}
+void WorldFacadeImpl::freeUpLocations() {
+	vector<string> keys = vector<string>();
+	for(LocationMap::iterator it = locations.begin();it != locations.end();it++)
+	{
+		keys.push_back(it->first);
+	}
+
+	for (vector<string>::iterator it = keys.begin(); it != keys.end(); it++) {
+		locations.erase(*it);
+	}
+
+}
 
 WorldFacadeImpl::~WorldFacadeImpl() {
-//    freeUpLocations();
+	freeUpLocations();
 	getLogger()->logEvent(EventLogger::destructorString());
 }
 
 void WorldFacadeImpl::createLocation(string lName)
 {
-	LocationPtr l = new LocationImpl(getLogger(), lName);
-	std::cout << "mezi" << std::endl;
-	locations[lName] = l;
-	std::cout << "po" << std::endl;
-
+	locations[lName] = new LocationImpl(getLogger(), lName);;
 }
 
 void WorldFacadeImpl::deleteLocation(string lName)
@@ -45,8 +46,7 @@ void WorldFacadeImpl::deleteLocation(string lName)
 
 void WorldFacadeImpl::createAgent(string aName, string lName)
 {
-	SmartPointer<Agent> a = new Agent(getLogger(), aName);
-	locations[lName]->agentEnters(a);
+	locations[lName]->agentEnters(new Agent(getLogger(), aName));
 }
 
 AgentPointer WorldFacadeImpl::getAgentWithId(string id)
@@ -59,7 +59,7 @@ AgentPointer WorldFacadeImpl::getAgentWithId(string id)
 //{
 //	if (locations.find(id) != locations.end())
 //	{
-//		return locations[id];
+//		return *locations[id];
 //	}
 //	return findAgentByName(id);
 //

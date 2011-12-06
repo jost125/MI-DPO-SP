@@ -10,14 +10,12 @@
 
 #include "logging/Loggable.h"
 #include "Object.h"
-#include "solution/RefCounter.h"
-#include "solution/ITarget.h"
 #include <string>
 
 using namespace std;
 
 
-class Agent: public Loggable, public Object, public RefCounter, public ITarget {
+class Agent: public Loggable, public Object {
 public:
 	Agent(EventLogger* logger, string name);
 	virtual ~Agent();
@@ -25,8 +23,6 @@ public:
 	string getName();
 	void setName(string newName);
 
-	virtual void addRef();
-	virtual void release();
 private:
 };
 

@@ -34,7 +34,7 @@ public:
 
 private:
 	LocationMap locations;
-    void freeUpLocations();
+	void freeUpLocations();
     AgentPointer findAgentByName(string name);
 };
 

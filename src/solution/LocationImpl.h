@@ -10,8 +10,6 @@
 
 #include "../Location.h"
 #include "../midpo_utils.h"
-#include "ITarget.h"
-#include "IRefCounter.h"
 #include "SmartPointer.h"
 #include "../Agent.h"
 
@@ -19,7 +17,7 @@ using namespace std;
 
 typedef list<AgentPointer> AgentList;
 
-class LocationImpl: public Location, public RefCounter, public ITarget {
+class LocationImpl: public Location {
 private:
 	AgentList agents;
 
@@ -30,10 +28,6 @@ public:
 	void agentEnters(AgentPointer a);
 
 	void agentLeaves(AgentPointer a);
-
-	void virtual addRef();
-
-	void virtual release();
 
 	AgentList agentsInside();
 

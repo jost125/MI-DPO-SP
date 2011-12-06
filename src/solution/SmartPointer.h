@@ -12,38 +12,73 @@
 
 template <class T> class SmartPointer {
 private:
-	T* pointer;
-public:
-	SmartPointer(T* pointer = 0) {
-		std::cout << "constructing pointer " << pointer << std::endl;
-		this->pointer = pointer;
+	/**
+	 * Reference counter.
+	 */
+	struct Counter {
+		T* pointer;
+		unsigned int count;
+
+		Counter(T* pointer = 0, unsigned int count = 1) : pointer(pointer), count(count) {}
+	}* counter;
+
+	/**
+	 * Adding reference and increment counter.
+	 */
+	void addRef(Counter* counter) {
+		this->counter = counter;
+		if (this->counter) {
+			this->counter->count++;
+		}
 	}
 
-	SmartPointer(const SmartPointer<T>& smartPointer) : pointer(smartPointer.pointer) {
+	/**
+	 * Release reference and decrement counter. If its zero, delete it.
+	 */
+	void release() {
+		if (this->counter) {
+			if (--this->counter->count == 0) {
+				delete this->counter->pointer;
+				delete this->counter;
+			}
+
+			this->counter = 0;
+		}
+	}
+
+public:
+	SmartPointer(T* pointer = 0) : counter(0) {
+		if (pointer) {
+			this->counter = new Counter(pointer);
+		}
+	}
+
+	SmartPointer(const SmartPointer<T>& smartPointer) {
+		this->addRef(smartPointer.counter);
 	}
 
 	~SmartPointer() {
-		delete pointer;
+		this->release();
 	}
 
 	T& operator * () {
-		return *pointer;
+		return *this->counter->pointer;
 	}
 
 	T* operator -> () {
-		return pointer;
+		return this->counter->pointer;
 	}
 
 	SmartPointer<T>& operator=(const SmartPointer<T>& smartPointer) {
 		if (this != &smartPointer) {
-			this->pointer = smartPointer.pointer;
+			this->release();
+			this->addRef(smartPointer.counter);
 		}
 		return *this;
 	}
 
 	bool operator==(const SmartPointer<T>& smartPointer) {
-		std::cout << "comparing pointer" << std::endl;
-		return this->pointer == smartPointer.pointer;
+		return this->counter->pointer == smartPointer.counter->pointer;
 	}
 };
 
