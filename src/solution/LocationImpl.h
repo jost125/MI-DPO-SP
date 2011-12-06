@@ -15,6 +15,9 @@
 
 using namespace std;
 
+/**
+ * Name list of smart pointers to agents as AgentList.
+ */
 typedef list<AgentPointer> AgentList;
 
 class LocationImpl: public Location {

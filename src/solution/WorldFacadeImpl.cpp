@@ -16,6 +16,10 @@ WorldFacadeImpl::WorldFacadeImpl(EventLogger* logger) {
 	getLogger()->logEvent(EventLogger::constructorString());
 }
 
+/**
+ * Unfortunately the tests in Main.cpp expects deleting of elements in ordered way :-(, so
+ * method creates vector, goes through locations and delete them in that order.
+ */
 void WorldFacadeImpl::freeUpLocations() {
 	vector<string> keys = vector<string>();
 	for(LocationMap::iterator it = locations.begin();it != locations.end();it++)
@@ -53,18 +57,6 @@ AgentPointer WorldFacadeImpl::getAgentWithId(string id)
 {
 	return (AgentPointer)findAgentByName(id);
 }
-
-
-//Object* WorldFacadeImpl::getObjectWithId(string id)
-//{
-//	if (locations.find(id) != locations.end())
-//	{
-//		return *locations[id];
-//	}
-//	return findAgentByName(id);
-//
-//}
-
 
 AgentPointer WorldFacadeImpl::findAgentByName(string name)
 {

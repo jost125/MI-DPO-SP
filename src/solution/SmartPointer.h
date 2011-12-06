@@ -10,6 +10,13 @@
 
 #include <iostream>
 
+/**
+ * Generic smart pointer with internal reference counting. (Intrusive pointer)
+ *
+ * According to http://www.cplusplus.com/doc/tutorial/templates/ the implementation
+ * of generic classes has to be inside header files because of limitations of compiler.
+ */
+
 template <class T> class SmartPointer {
 private:
 	/**
@@ -47,28 +54,46 @@ private:
 	}
 
 public:
+	/**
+	 * Normal constuctor.
+	 */
 	SmartPointer(T* pointer = 0) : counter(0) {
 		if (pointer) {
 			this->counter = new Counter(pointer);
 		}
 	}
 
+	/**
+	 * Copy constructor.
+	 */
 	SmartPointer(const SmartPointer<T>& smartPointer) {
 		this->addRef(smartPointer.counter);
 	}
 
+	/**
+	 * Destruct (releases pointer)
+	 */
 	~SmartPointer() {
 		this->release();
 	}
 
+	/**
+	 * Operator dereference.
+	 */
 	T& operator * () {
 		return *this->counter->pointer;
 	}
 
+	/**
+	 * Operator ->
+	 */
 	T* operator -> () {
 		return this->counter->pointer;
 	}
 
+	/**
+	 * Operator assign
+	 */
 	SmartPointer<T>& operator=(const SmartPointer<T>& smartPointer) {
 		if (this != &smartPointer) {
 			this->release();
@@ -77,6 +102,9 @@ public:
 		return *this;
 	}
 
+	/**
+	 * Operator compare
+	 */
 	bool operator==(const SmartPointer<T>& smartPointer) {
 		return this->counter->pointer == smartPointer.counter->pointer;
 	}

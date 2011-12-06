@@ -13,7 +13,7 @@
 using namespace std;
 
 /**
- * This may be changed! And probably will be :)
+ * Changed to own smart pointer.
  */
 typedef SmartPointer<Agent> AgentPointer;
 
