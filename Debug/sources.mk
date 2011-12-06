@@ -23,7 +23,7 @@ C_UPPER_DEPS :=
 
 # Every subdirectory with source files must be described here
 SUBDIRS := \
-src/naive_impl \
+src/solution \
 src \
 src/logging \
 

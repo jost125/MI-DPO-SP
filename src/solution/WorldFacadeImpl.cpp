@@ -5,57 +5,57 @@
  *      
  */
 
-#include "WorldFacadeNaiveImpl.h"
+#include "WorldFacadeImpl.h"
 #include <iostream>
 
 using namespace std;
 
 
-WorldFacadeNaiveImpl::WorldFacadeNaiveImpl(EventLogger* logger) {
-	cout << "Naive Implementation Of World Facade created!" << endl;
+WorldFacadeImpl::WorldFacadeImpl(EventLogger* logger) {
 	acceptLogger(logger);
 	getLogger()->logEvent(EventLogger::constructorString());
 }
 
-void WorldFacadeNaiveImpl::freeUpLocations()
-{
-    for(LocationMap::iterator it = locations.begin();it != locations.end();it++)
-    {
-    	delete it->second;
-    }
-}
+//void WorldFacadeImpl::freeUpLocations()
+//{
+//		for(LocationMap::iterator it = locations.begin();it != locations.end();it++)
+//	{
+//		delete it->;
+//	}
+//}
 
-WorldFacadeNaiveImpl::~WorldFacadeNaiveImpl() {
-    freeUpLocations();
+WorldFacadeImpl::~WorldFacadeImpl() {
+//    freeUpLocations();
 	getLogger()->logEvent(EventLogger::destructorString());
 }
 
-void WorldFacadeNaiveImpl::createLocation(string lName)
+void WorldFacadeImpl::createLocation(string lName)
 {
-	LocationNaive* l = new LocationNaive(getLogger(), lName);
+	LocationPtr l = new LocationImpl(getLogger(), lName);
+	std::cout << "mezi" << std::endl;
 	locations[lName] = l;
+	std::cout << "po" << std::endl;
+
 }
 
-void WorldFacadeNaiveImpl::deleteLocation(string lName)
+void WorldFacadeImpl::deleteLocation(string lName)
 {
-	delete locations[lName];
 	locations.erase(lName);
 }
 
-void WorldFacadeNaiveImpl::createAgent(string aName, string lName)
+void WorldFacadeImpl::createAgent(string aName, string lName)
 {
-	Agent* a = new Agent(getLogger(), aName);
+	SmartPointer<Agent> a = new Agent(getLogger(), aName);
 	locations[lName]->agentEnters(a);
 }
 
-AgentPointer WorldFacadeNaiveImpl::getAgentWithId(string id)
+AgentPointer WorldFacadeImpl::getAgentWithId(string id)
 {
 	return (AgentPointer)findAgentByName(id);
-
 }
 
 
-//Object* WorldFacadeNaiveImpl::getObjectWithId(string id)
+//Object* WorldFacadeImpl::getObjectWithId(string id)
 //{
 //	if (locations.find(id) != locations.end())
 //	{
@@ -66,17 +66,17 @@ AgentPointer WorldFacadeNaiveImpl::getAgentWithId(string id)
 //}
 
 
-Agent* WorldFacadeNaiveImpl::findAgentByName(string name)
+AgentPointer WorldFacadeImpl::findAgentByName(string name)
 {
 	for (LocationMap::const_iterator it = locations.begin(); it != locations.end(); it++)
 	{
-		LocationNaive* location = it->second;
+		LocationPtr location = it->second;
 		//cout << "FOUND LOCATION: " << *location << endl;
 
 		AgentList agentsInside = location->agentsInside();
 		for (AgentList::const_iterator it2 = agentsInside.begin(); it2 != agentsInside.end(); it++)
 		{
-			Agent* agent = *it2;
+			SmartPointer<Agent> agent = *it2;
 			//cout << "FOUND AGENT: " << *agent << endl;
 			if (name == agent->getName())
 			{
@@ -89,7 +89,7 @@ Agent* WorldFacadeNaiveImpl::findAgentByName(string name)
 }
 
 
-StringList WorldFacadeNaiveImpl::getAgentsInLocation(string lName)
+StringList WorldFacadeImpl::getAgentsInLocation(string lName)
 {
 	AgentList agentsInside = locations[lName]->agentsInside();
 	list<string> l;
@@ -102,29 +102,29 @@ StringList WorldFacadeNaiveImpl::getAgentsInLocation(string lName)
 	return l;
 }
 
-StringList WorldFacadeNaiveImpl::getLocationsInWorld()
+StringList WorldFacadeImpl::getLocationsInWorld()
 {
 	StringList l;
-	for (LocationMap::const_iterator it = locations.begin(); it != locations.end(); it++)
+	for (LocationMap::iterator it = locations.begin(); it != locations.end(); it++)
 	{
 		l.push_back(it->second->getName());
 	}
 	return l;
 }
 
-StringList WorldFacadeNaiveImpl::getAgentsInWorld()
+StringList WorldFacadeImpl::getAgentsInWorld()
 {
 	StringList l;
 	cout << "locsInWorld size: " << locations.size() << endl;
 
 	for (LocationMap::const_iterator it =locations.begin(); it != locations.end(); it++)
 	{
-		LocationNaive* location = it->second;
-		list<Agent*> agentsInside = location->agentsInside();
+		LocationPtr location = it->second;
+		list<AgentPointer> agentsInside = location->agentsInside();
 
-		for (list<Agent*>::const_iterator it2 = agentsInside.begin(); it2 != agentsInside.end(); it2++)
+		for (list<AgentPointer>::const_iterator it2 = agentsInside.begin(); it2 != agentsInside.end(); it2++)
 		{
-			Agent* agent = *it2;
+			AgentPointer agent = *it2;
 			l.push_back(agent->getName());
 		}
 	}

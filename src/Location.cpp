@@ -28,5 +28,3 @@ void Location::setName(string name)
 {
 	setId(name);
 }
-
-

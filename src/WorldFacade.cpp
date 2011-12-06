@@ -8,7 +8,7 @@
 #include "WorldFacade.h"
 #include <iostream>
 
-#include "naive_impl/WorldFacadeNaiveImpl.h"
+#include "solution/WorldFacadeImpl.h"
 
 using namespace std;
 
@@ -17,7 +17,7 @@ WorldFacade* WorldFacade::createWorldFacade(EventLogger* logger)
 	WorldFacade* facade;
 
 	// Use your own implementation of the WorldFacade here
-	facade = new WorldFacadeNaiveImpl(logger);
+	facade = new WorldFacadeImpl(logger);
 
 	return facade;
 }

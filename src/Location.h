@@ -27,7 +27,7 @@ public:
 	string getName();
 
 
-	void setName(string newName);
+	virtual void setName(string newName);
 };
 
 #endif /* ROOM_H_ */

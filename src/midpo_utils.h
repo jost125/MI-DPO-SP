@@ -8,13 +8,14 @@
 #include <string>
 #include <list>
 #include <vector>
+#include "solution/SmartPointer.h"
 
 using namespace std;
 
 /**
  * This may be changed! And probably will be :)
  */
-typedef Agent* AgentPointer;
+typedef SmartPointer<Agent> AgentPointer;
 
 string serializeStringList(StringList list);
 

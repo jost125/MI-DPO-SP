@@ -15,10 +15,12 @@ Agent::Agent(EventLogger* logger, string name) {
 	setId(name);
 	acceptLogger(logger);
 	getLogger()->logEvent(EventLogger::constructorString(getName()));
+	this->addRef();
 }
 
 Agent::~Agent() {
 	getLogger()->logEvent(EventLogger::destructorString(getName()));
+	this->release();
 }
 
 string Agent::getName()
@@ -29,4 +31,12 @@ string Agent::getName()
 void Agent::setName(string name)
 {
 	setId(name);
+}
+
+void Agent::addRef() {
+	this->addRefImpl();
+}
+
+void Agent::release() {
+	this->releaseImpl();
 }

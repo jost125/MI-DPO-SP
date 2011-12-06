@@ -8,18 +8,19 @@
 #ifndef WORLDFACADEIMPL_H_
 #define WORLDFACADEIMPL_H_
 #include "../WorldFacade.h"
-#include "LocationNaive.h"
+#include "SmartPointer.h"
+#include "LocationImpl.h"
 
 using namespace std;
 
-typedef LocationNaive* LocationPtr;
+typedef SmartPointer<LocationImpl> LocationPtr;
 typedef map<string, LocationPtr> LocationMap;
 
 
-class WorldFacadeNaiveImpl: public WorldFacade {
+class WorldFacadeImpl: public WorldFacade {
 public:
-	WorldFacadeNaiveImpl(EventLogger* logger);
-	virtual ~WorldFacadeNaiveImpl();
+	WorldFacadeImpl(EventLogger* logger);
+	virtual ~WorldFacadeImpl();
 
 	virtual void createLocation(string lName);
 	virtual void createAgent(string aName, string lName);
@@ -34,7 +35,7 @@ public:
 private:
 	LocationMap locations;
     void freeUpLocations();
-    Agent* findAgentByName(string name);
+    AgentPointer findAgentByName(string name);
 };
 
 

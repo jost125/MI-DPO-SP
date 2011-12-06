@@ -14,7 +14,9 @@ void testLocations() {
 	EventLogger* logger = new EventLogger("testLocations");
 
 	WorldFacade *world = WorldFacade::createWorldFacade(logger);
+	std::cout << "tady" << std::endl;
 	world->createLocation("loc1");
+	std::cout << "tu" << std::endl;
 	world->createLocation("loc2");
 	string locationsInTheWorld = serializeStringList(world->getLocationsInWorld());
 	logger->logEvent(locationsInTheWorld);
